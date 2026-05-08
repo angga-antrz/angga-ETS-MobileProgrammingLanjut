@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.ets_angga_mpl"
+        applicationId = "com.example.utd_store_jaisy"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -41,4 +41,20 @@ android {
 
 flutter {
     source = "../.."
+}
+
+// --- KODE SAKTI UNTUK FIX ISAR NAMESPACE ---
+// Letakkan ini di paling bawah agar semua sub-project (termasuk isar) 
+// mendapatkan namespace otomatis saat build.
+subprojects {
+    afterEvaluate {
+        val project = this
+        if (project.extensions.findByName("android") != null) {
+            configure<com.android.build.gradle.BaseExtension> {
+                if (namespace == null) {
+                    namespace = project.group.toString()
+                }
+            }
+        }
+    }
 }
