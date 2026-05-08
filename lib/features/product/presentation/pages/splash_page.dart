@@ -34,7 +34,7 @@ class _SplashPageState extends State<SplashPage> {
             right: -50,
             child: CircleAvatar(
               radius: 100,
-              backgroundColor: primaryColor.withOpacity(0.1),
+              backgroundColor: primaryColor.withValues(alpha:0.1),
             ),
           ),
           Center(
@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage> {
                     borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
-                        color: primaryColor.withOpacity(0.3),
+                        color: primaryColor.withValues(alpha:0.3),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),

@@ -141,7 +141,7 @@ class DetailPage extends StatelessWidget {
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05), 
+                      color: Colors.black.withValues( alpha: 0.05), 
                       blurRadius: 15, 
                       offset: const Offset(0, -5),
                     ),
@@ -210,7 +210,7 @@ class DetailPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.teal.withOpacity(0.05), 
+        color: Colors.teal.withValues(alpha:0.05), 
         borderRadius: BorderRadius.circular(15),
       ),
       child: const Row(

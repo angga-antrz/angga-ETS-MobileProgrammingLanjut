@@ -28,7 +28,7 @@ class _NativePageState extends State<NativePage> {
       setState(() {
         _batteryDisplay = "Gagal";
       });
-      debugPrint("Gagal membaca baterai: '${e.message}'."); [cite: 1047]
+      debugPrint("Gagal membaca baterai: '${e.message}'."); 
     }
   }
 
@@ -72,7 +72,7 @@ class _NativePageState extends State<NativePage> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 20, offset: const Offset(0, 10))
+                  BoxShadow(color: Colors.black.withValues(alpha:0.05), blurRadius: 20, offset: const Offset(0, 10))
                 ],
               ),
               child: Column(
@@ -179,15 +179,15 @@ class _NativePageState extends State<NativePage> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withOpacity(0.1)),
+          border: Border.all(color: color.withValues( alpha:0.1)),
           boxShadow: [
-            BoxShadow(color: color.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+            BoxShadow(color: color.withValues(alpha:0.05), blurRadius: 10, offset: const Offset(0, 4))
           ]
         ),
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: color.withOpacity(0.1),
+              backgroundColor: color.withValues(alpha:0.1),
               child: Icon(icon, color: color, size: 24),
             ),
             const SizedBox(width: 20),
