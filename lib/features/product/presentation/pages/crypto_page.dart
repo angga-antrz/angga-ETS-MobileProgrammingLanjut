@@ -3,9 +3,9 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
-// 1. FUNGSI BERAT DI LUAR CLASS (Top-level Function untuk Isolate)
-// Wajib berada di luar class agar bisa dijalankan oleh Isolate (Pekerja Background)
-int hitungKalkulasiAngga(int jumlahLooping) {
+// 1. FUNGSI BERAT DI LUAR CLASS (Logika Isolate)
+// Menggunakan top-level function agar bisa dijalankan di Isolate
+int tugasMenghitungBerat(int jumlahLooping) {
   int hasil = 0;
   for (int i = 0; i < jumlahLooping; i++) {
     hasil += i;
@@ -28,7 +28,8 @@ class _CryptoPageState extends State<CryptoPage> {
   @override
   void initState() {
     super.initState();
-    // Menghubungkan ke WebSocket CoinCap untuk harga Bitcoin real-time
+    // MENGGUNAKAN API BINANCE (Live Trade BTC/USDT)
+    // Sesuai permintaan, menggunakan wss://data-stream.binance.vision
     _channel = WebSocketChannel.connect(
       Uri.parse('wss://data-stream.binance.vision/ws/btcusdt@trade'),
     );
@@ -36,123 +37,132 @@ class _CryptoPageState extends State<CryptoPage> {
 
   @override
   void dispose() {
-    // WAJIB: Tutup koneksi saat halaman ditinggalkan agar tidak bocor memori
-    _channel.sink.close(); 
+    _channel.sink.close(); // Mencegah memory leak
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Colors.teal; // Konsisten dengan AppTheme Angga
-    const Color btcColor = Colors.orange;
+    // Palet warna Teal konsisten dengan UTD Store Angga
+    const Color primaryColor = Colors.teal; 
+    const Color darkBg = Color(0xFF0B1015); 
 
     return Scaffold(
-      backgroundColor: const Color(0xFF121212), // Dark Mode agar grafik terlihat premium
+      backgroundColor: darkBg,
       appBar: AppBar(
         title: const Text(
-          'CRYPTO HUB ANGGA',
-          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.5),
+          'ANGGA CRYPTO MONITOR',
+          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.5, fontSize: 16),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
         elevation: 0,
+        backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
       ),
-      body: Column(
-        children: [
-          // Header Identitas Personal
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.all(20),
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white10),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('REAL-TIME MONITORING', style: TextStyle(color: primaryColor, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)),
-                    Text('BITCOIN / USD', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Text('DEVELOPER', style: TextStyle(color: Colors.white38, fontSize: 10)),
-                    Text('ANGGA - 02', style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          children: [
+            // Header Info Personal
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: primaryColor.withOpacity(0.3)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Kartu Harga Real-time (WebSocket)
-                  _buildPriceDisplay(btcColor),
-
-                  const SizedBox(height: 40),
-
-                  // Indikator Stabilitas UI (Membuktikan UI tidak macet saat Isolate jalan)
-                  const Text('UI THREAD STABILITY', style: TextStyle(color: Colors.white38, fontSize: 10, letterSpacing: 2)),
-                  const SizedBox(height: 15),
-                  CircularProgressIndicator(
-                    strokeWidth: 3,
-                    valueColor: AlwaysStoppedAnimation<Color>(_isCalculating ? Colors.redAccent : primaryColor),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('LIVE MONITORING', style: TextStyle(color: Colors.tealAccent, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
+                      Text('BTC / USDT TRADE', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    ],
                   ),
-
-                  const SizedBox(height: 50),
-
-                  // Tombol Kalkulasi Isolate (Logika NIM 20.000.000)
-                  _buildIsolateButton(primaryColor),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text('OPERATOR', style: TextStyle(color: Colors.white38, fontSize: 10)),
+                      Text('ANGGA - 02', style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                 ],
               ),
             ),
-          ),
-        ],
+
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    // Kartu Harga Real-time (Binance Data)
+                    _buildModernPriceCard(primaryColor),
+
+                    const SizedBox(height: 40),
+
+                    // Indikator Responsivitas UI (Penting untuk demo Isolate)
+                    const Text('SYSTEM STABILITY CHECK', style: TextStyle(color: Colors.white38, fontSize: 10, letterSpacing: 2)),
+                    const SizedBox(height: 15),
+                    CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(_isCalculating ? Colors.redAccent : primaryColor),
+                    ),
+
+                    const SizedBox(height: 50),
+
+                    // Tombol Kalkulasi Isolate (Logika NIM 02)
+                    _buildNeonButton(primaryColor),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildPriceDisplay(Color accent) {
+  Widget _buildModernPriceCard(Color accent) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
-        color: accent.withValues(alpha:0.05),
+        color: Colors.white.withOpacity(0.02),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: accent.withValues( alpha: 0.2)),
+        border: Border.all(color: accent.withOpacity(0.2), width: 1),
+        boxShadow: [
+          BoxShadow(color: accent.withOpacity(0.05), blurRadius: 40, spreadRadius: -10),
+        ],
       ),
       child: Column(
         children: [
-          Icon(Icons.currency_bitcoin_rounded, size: 60, color: accent),
+          Icon(Icons.currency_bitcoin_rounded, size: 50, color: accent),
           const SizedBox(height: 20),
           StreamBuilder(
             stream: _channel.stream,
             builder: (context, snapshot) {
-              if (snapshot.hasError) return const Text('CONNECTION ERROR', style: TextStyle(color: Colors.redAccent));
+              if (snapshot.hasError) return const Text('CONNECTION ERROR', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold));
               if (!snapshot.hasData) return const CircularProgressIndicator(color: Colors.white24);
 
+              // Decode JSON dari Binance Trade Stream
               final Map<String, dynamic> dataJson = jsonDecode(snapshot.data.toString());
-              final String price = dataJson['bitcoin'] ?? '0.00';
+              // Key 'p' pada Binance melambangkan 'Price'
+              final String price = dataJson['p'] ?? '0.00';
               _currentPrice = double.parse(price).toStringAsFixed(2);
 
               return Column(
                 children: [
                   Text(
                     '\$ $_currentPrice',
-                    style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -1),
                   ),
-                  const SizedBox(height: 8),
-                  const Text('LIVE DATA FROM WEBSOCKET', style: TextStyle(color: Colors.white24, fontSize: 10, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 5),
+                  Text('REAL-TIME FROM BINANCE WS', style: TextStyle(color: accent.withOpacity(0.6), fontSize: 10, fontWeight: FontWeight.bold)),
                 ],
               );
             },
@@ -162,7 +172,7 @@ class _CryptoPageState extends State<CryptoPage> {
     );
   }
 
-  Widget _buildIsolateButton(Color primary) {
+  Widget _buildNeonButton(Color accent) {
     return Column(
       children: [
         SizedBox(
@@ -170,25 +180,30 @@ class _CryptoPageState extends State<CryptoPage> {
           height: 60,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: _isCalculating ? Colors.grey : primary,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              backgroundColor: _isCalculating ? Colors.transparent : accent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+                side: BorderSide(color: accent, width: 2),
+              ),
+              elevation: _isCalculating ? 0 : 8,
             ),
             onPressed: _isCalculating ? null : () async {
               setState(() => _isCalculating = true);
               
-              // LOGIKA PERSONAL: 2 digit terakhir NIM (02) x 10.000.000 = 20.000.000
-              const int loopTarget = 20000000;
+              // LOGIKA PERSONAL: 02 (NIM) x 10.000.000 perulangan
+              const int nimLoopFactor = 2 * 10000000; 
               
-              // Menjalankan Isolate (compute) agar UI tidak freeze
-              final result = await compute(hitungKalkulasiAngga, loopTarget);
+              // Menjalankan tugas di background menggunakan Isolate
+              final result = await compute(tugasMenghitungBerat, nimLoopFactor);
 
               setState(() => _isCalculating = false);
 
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('KALKULASI ANGGA BERHASIL: $result'),
-                    backgroundColor: primary,
+                    content: Text('ISOLATE 02 SUCCESS: $result'),
+                    backgroundColor: accent,
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
@@ -196,12 +211,12 @@ class _CryptoPageState extends State<CryptoPage> {
             },
             child: _isCalculating 
               ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-              : const Text('KALKULASI PAJAK (NIM 02)', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              : const Text('CALCULATE HEAVY TASK (NIM 02)', style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
           ),
         ),
         const SizedBox(height: 12),
-        const Text('LOGIKA: 02 x 10.000.000 LOOPING', style: TextStyle(color: Colors.white24, fontSize: 10)),
+        const Text('ISOLATE ENSURES UI REMAINS RESPONSIVE', style: TextStyle(color: Colors.white24, fontSize: 9, letterSpacing: 1)),
       ],
     );
-  }
+  } 
 }
