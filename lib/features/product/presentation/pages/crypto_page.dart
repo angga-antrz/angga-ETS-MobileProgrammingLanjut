@@ -69,9 +69,9 @@ class _CryptoPageState extends State<CryptoPage> {
               margin: const EdgeInsets.symmetric(horizontal: 20),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.05),
+                color: Colors.white.withValues(alpha:0.05),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: primaryColor.withOpacity(0.3)),
+                border: Border.all(color: primaryColor.withValues(alpha:0.3)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,11 +132,11 @@ class _CryptoPageState extends State<CryptoPage> {
       width: double.infinity,
       padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.02),
+        color: Colors.white.withValues(alpha:0.02),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: accent.withOpacity(0.2), width: 1),
+        border: Border.all(color: accent.withValues(alpha:0.2), width: 1),
         boxShadow: [
-          BoxShadow(color: accent.withOpacity(0.05), blurRadius: 40, spreadRadius: -10),
+          BoxShadow(color: accent.withValues(alpha:0.05), blurRadius: 40, spreadRadius: -10),
         ],
       ),
       child: Column(
@@ -162,7 +162,7 @@ class _CryptoPageState extends State<CryptoPage> {
                     style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold, color: Colors.white, letterSpacing: -1),
                   ),
                   const SizedBox(height: 5),
-                  Text('REAL-TIME FROM BINANCE WS', style: TextStyle(color: accent.withOpacity(0.6), fontSize: 10, fontWeight: FontWeight.bold)),
+                  Text('REAL-TIME FROM BINANCE WS', style: TextStyle(color: accent.withValues(alpha:0.6), fontSize: 10, fontWeight: FontWeight.bold)),
                 ],
               );
             },
