@@ -9,16 +9,15 @@ class NativePage extends StatefulWidget {
 }
 
 class _NativePageState extends State<NativePage> {
-  // SINKRONISASI: Nama channel ini harus sama persis dengan yang ada di MainActivity.kt [cite: 1035, 1128]
+  // SINKRONISASI: Harus sama persis dengan yang ada di MainActivity.kt
   static const platform = MethodChannel('utd.ac.id/native_jembatan');
 
-  String _batteryDisplay = 'Belum dicek';
+  String _batteryDisplay = '--';
   int _batteryRawValue = 0;
 
-  // 1. Fungsi mengambil data baterai dari sisi Native Kotlin [cite: 1039, 1134]
+  // 1. Fungsi mengambil data baterai dari Sistem Android (Kotlin)
   Future<void> _getBatteryLevel() async {
     try {
-      // Memanggil fungsi 'getBatteryLevel' di Kotlin [cite: 1043, 1135]
       final int result = await platform.invokeMethod('getBatteryLevel');
       setState(() {
         _batteryRawValue = result;
@@ -26,34 +25,35 @@ class _NativePageState extends State<NativePage> {
       });
     } on PlatformException catch (e) {
       setState(() {
-        _batteryDisplay = "Gagal";
+        _batteryDisplay = "Err";
       });
-      debugPrint("Gagal membaca baterai: '${e.message}'."); 
+      debugPrint("Gagal mengambil baterai Angga: '${e.message}'.");
     }
   }
 
-  // 2. Fungsi memunculkan Toast melalui OS Android asli [cite: 1052, 1143]
+  // 2. Fungsi memunculkan Toast Native melalui Android OS
   Future<void> _showNativeToast() async {
     try {
-      // Mengirim data identitas Angga ke Kotlin untuk ditampilkan sebagai Toast [cite: 1055, 1147]
+      // Mengirim identitas Angga Antareza ke sistem Android
       await platform.invokeMethod('showToast', {
-        "pesan": "Angga Antareza (20123002) - Native Toast Berhasil!"
+        "message": "Halo Pak, Saya Angga Antareza (20123002)! Native Toast Berhasil."
       });
     } on PlatformException catch (e) {
-      debugPrint("Gagal memanggil Toast Native: $e");
+      debugPrint("Gagal memanggil Toast Angga: $e");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Colors.teal; // Konsisten dengan AppTheme Angga
+    const Color primaryColor = Colors.teal; // Konsistensi dengan UTD Store Angga
+    const Color darkColor = Color(0xFF101820); 
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
-          'INTEGRASI NATIVE KOTLIN',
-          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2, fontSize: 16),
+          'INTEGRASI NATIVE',
+          style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 2, fontSize: 16),
         ),
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
@@ -64,33 +64,33 @@ class _NativePageState extends State<NativePage> {
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            // Panel Informasi Baterai
+            // Bagian Visual Baterai Kustom (Ciri Khas Angga)
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 40),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: darkColor,
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withValues(alpha:0.05), blurRadius: 20, offset: const Offset(0, 10))
+                  BoxShadow(color: Colors.black.withValues(alpha:0.1), blurRadius: 20, offset: const Offset(0, 10))
                 ],
               ),
               child: Column(
                 children: [
                   const Text(
-                    "STATUS BATERAI PERANGKAT",
-                    style: TextStyle(color: Colors.black38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2),
+                    "HARDWARE MONITOR",
+                    style: TextStyle(color: Colors.white38, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2),
                   ),
                   const SizedBox(height: 30),
-                  // Visualisasi Baterai Kustom
+                  // Visual Baterai Dinamis
                   _buildBatteryIcon(primaryColor),
                   const SizedBox(height: 20),
                   Text(
                     _batteryDisplay,
-                    style: const TextStyle(color: Colors.black87, fontSize: 48, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),
                   ),
                   const Text(
-                    "KAPASITAS SAAT INI",
+                    "BATTERY CAPACITY",
                     style: TextStyle(color: primaryColor, fontSize: 10, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -99,29 +99,30 @@ class _NativePageState extends State<NativePage> {
             
             const SizedBox(height: 40),
             
-            // Menu Tombol Aksi Native
+            // Tombol Aksi Native
             _buildNativeActionCard(
-              title: "CEK STATUS BATERAI",
-              subtitle: "Ambil data hardware via MethodChannel",
+              title: "REFRESH BATERAI",
+              subtitle: "Ambil kapasitas daya langsung dari Sistem Android",
               icon: Icons.battery_charging_full_rounded,
-              color: primaryColor,
+              color: darkColor,
               onTap: _getBatteryLevel,
             ),
             
             const SizedBox(height: 16),
             
             _buildNativeActionCard(
-              title: "TAMPILKAN NATIVE TOAST",
-              subtitle: "Panggil fungsi Toast dari OS Android",
+              title: "TAMPILKAN TOAST",
+              subtitle: "Kirim pesan identitas Angga ke Android Toast",
               icon: Icons.message_rounded,
-              color: Colors.orange.shade800,
+              color: primaryColor,
+              textColor: Colors.white,
               onTap: _showNativeToast,
             ),
             
             const SizedBox(height: 40),
-            const Text(
+            Text(
               "ANGGA ANTAREZA - 20123002",
-              style: TextStyle(color: Colors.black26, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+              style: TextStyle(color: Colors.grey.shade400, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1),
             ),
           ],
         ),
@@ -129,32 +130,34 @@ class _NativePageState extends State<NativePage> {
     );
   }
 
-  // Widget Baterai Kustom yang Reaktif
+  // Widget untuk menggambar Baterai Kustom
   Widget _buildBatteryIcon(Color color) {
     return Container(
-      width: 100,
-      height: 50,
+      width: 120,
+      height: 60,
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black12, width: 3),
+        border: Border.all(color: Colors.white24, width: 3),
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: const EdgeInsets.all(3),
+      padding: const EdgeInsets.all(4),
       child: Stack(
         children: [
+          // Indikator Isi Baterai (Merespon Nilai Raw)
           FractionallySizedBox(
             widthFactor: _batteryRawValue / 100,
             child: Container(
               decoration: BoxDecoration(
-                color: _batteryRawValue < 20 ? Colors.red : color,
+                color: color,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
           ),
-          Center(
+          // Ikon Petir (Indikator Hardware)
+          const Center(
             child: Icon(
               Icons.bolt_rounded,
-              color: _batteryRawValue > 50 ? Colors.white : Colors.black26,
-              size: 24,
+              color: Colors.white,
+              size: 30,
             ),
           )
         ],
@@ -162,50 +165,44 @@ class _NativePageState extends State<NativePage> {
     );
   }
 
-  // Widget Kartu Menu Aksi
+  // Widget untuk Kartu Aksi Native
   Widget _buildNativeActionCard({
     required String title,
     required String subtitle,
     required IconData icon,
     required Color color,
+    Color textColor = Colors.white,
     required VoidCallback onTap,
   }) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: color,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withValues( alpha:0.1)),
-          boxShadow: [
-            BoxShadow(color: color.withValues(alpha:0.05), blurRadius: 10, offset: const Offset(0, 4))
-          ]
         ),
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundColor: color.withValues(alpha:0.1),
-              child: Icon(icon, color: color, size: 24),
-            ),
+            Icon(icon, color: textColor, size: 32),
             const SizedBox(width: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-                Text(
-                  subtitle,
-                  style: const TextStyle(color: Colors.black38, fontSize: 11),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  Text(
+                    subtitle,
+                    style: TextStyle(color: textColor.withValues(alpha:0.6), fontSize: 11),
+                  ),
+                ],
+              ),
             ),
-            const Spacer(),
-            Icon(Icons.arrow_forward_ios_rounded, color: color.withValues(alpha: 0.3), size: 16),
+            Icon(Icons.arrow_forward_ios_rounded, color: textColor.withValues(alpha : 0.3), size: 16),
           ],
         ),
       ),
