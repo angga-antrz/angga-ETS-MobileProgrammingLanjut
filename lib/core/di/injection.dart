@@ -1,10 +1,10 @@
 import 'package:get_it/get_it.dart';
-import '../network/api_client.dart';
-import '../../features/product/data/product_repository.dart';
-import '../../features/product/domain/product_service.dart';
-import '../../features/product/presentation/cubit/product_cubit.dart';
-import '../../features/todo/data/isar_service.dart';
-
+// Menggunakan Package Import agar lebih stabil
+import 'package:ets_angga_mpl/core/network/api_client.dart';
+import 'package:ets_angga_mpl/features/product/data/product_repository.dart';
+import 'package:ets_angga_mpl/features/product/domain/product_service.dart';
+import 'package:ets_angga_mpl/features/product/presentation/cubit/product_cubit.dart';
+import 'package:ets_angga_mpl/features/todo/data/isar_service.dart';
 // Inisialisasi sang 'Pelayan' (Service Locator) secara global
 final locator = GetIt.instance;
 

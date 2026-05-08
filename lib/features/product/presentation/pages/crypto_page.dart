@@ -30,7 +30,7 @@ class _CryptoPageState extends State<CryptoPage> {
     super.initState();
     // Menghubungkan ke WebSocket CoinCap untuk harga Bitcoin real-time
     _channel = WebSocketChannel.connect(
-      Uri.parse('wss://ws.coincap.io/prices?assets=bitcoin'),
+      Uri.parse('wss://data-stream.binance.vision/ws/btcusdt@trade'),
     );
   }
 
@@ -66,7 +66,7 @@ class _CryptoPageState extends State<CryptoPage> {
             margin: const EdgeInsets.all(20),
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
+              color: Colors.white.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.white10),
             ),
@@ -127,9 +127,9 @@ class _CryptoPageState extends State<CryptoPage> {
       width: double.infinity,
       padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
-        color: accent.withOpacity(0.05),
+        color: accent.withValues(alpha:0.05),
         borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: accent.withOpacity(0.2)),
+        border: Border.all(color: accent.withValues( alpha: 0.2)),
       ),
       child: Column(
         children: [

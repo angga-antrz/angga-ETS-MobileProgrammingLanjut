@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import '../domain/product_model.dart';
-import '../../../../core/di/injection.dart'; 
-import '../../../../core/network/api_client.dart'; 
+import 'package:ets_angga_mpl/features/product/domain/product_model.dart';
+import 'package:ets_angga_mpl/core/di/injection.dart';
+import 'package:ets_angga_mpl/core/network/api_client.dart';
 
 class ProductRepository {
   // Ambil ApiClient (Dio) dari Pelayan (get_it) agar tidak inisialisasi manual 

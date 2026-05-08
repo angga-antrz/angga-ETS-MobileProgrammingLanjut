@@ -205,7 +205,7 @@ class _NativePageState extends State<NativePage> {
               ],
             ),
             const Spacer(),
-            Icon(Icons.arrow_forward_ios_rounded, color: color.withOpacity(0.3), size: 16),
+            Icon(Icons.arrow_forward_ios_rounded, color: color.withValues(alpha: 0.3), size: 16),
           ],
         ),
       ),
