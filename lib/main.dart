@@ -21,9 +21,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Menggunakan MaterialApp.router untuk mendukung navigasi Declarative (GoRouter) [cite: 798, 799]
     return MaterialApp.router(
-      debugShowCheckedModeBanner: false, [cite: 800]
+      debugShowCheckedModeBanner: false, 
       // Identitas diubah sepenuhnya menjadi Angga Antareza [cite: 17]
-      title: 'UTD Store Angga', [cite: 801]
+      title: 'UTD Store Angga', 
       // Mengambil tema global Teal dari folder core [cite: 802]
       theme: AppTheme.lightTheme, 
       // Menggunakan konfigurasi rute yang sudah diarahkan ke SplashPage [cite: 804]
